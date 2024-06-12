@@ -1,0 +1,105 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-hourly
+  namespace: default
+spec:
+  schedule: "0 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: dbbackup
+              image: switzerchees/dbbackup:1.1.0
+              env:
+                - name: BACKUP_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: BACKUP_NAME
+                - name: BACKUP_DRIVER
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: BACKUP_DRIVER
+                - name: BACKUP_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: BACKUP_DATABASE
+                - name: BACKUP_DIR
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: BACKUP_DIR
+                - name: BACKUP_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: BACKUP_PASSWORD
+                - name: BACKUP_RETENTION
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: BACKUP_RETENTION
+                - name: CONNECTION_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: CONNECTION_HOST
+                - name: CONNECTION_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: CONNECTION_PORT
+                - name: CONNECTION_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: CONNECTION_USER
+                - name: CONNECTION_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: CONNECTION_PASSWORD
+                - name: CONNECTION_AUTH_DB
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: CONNECTION_AUTH_DB
+                - name: WEBDAV_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: WEBDAV_URL
+                - name: WEBDAV_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: WEBDAV_USER
+                - name: WEBDAV_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: WEBDAV_PASSWORD
+                - name: WEBDAV_PATH
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: WEBDAV_PATH
+                - name: PINGCHECK_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup
+                      key: PINGCHECK_URL
+              resources:
+                requests:
+                  memory: "512Mi"
+                  cpu: "250m"
+                limits:
+                  memory: "1Gi"
+                  cpu: "500m"

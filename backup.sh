@@ -10,6 +10,7 @@ fi
 
 # Set default values
 
+: ${BACKUP_NAME:='my-backup'}
 : ${BACKUP_DRIVER:='postgres'}
 : ${BACKUP_DATABASE:='db'}
 : ${BACKUP_DIR:='./backups'}
@@ -50,9 +51,9 @@ if [ "$BACKUP_DRIVER" = "postgres" ]; then
     backup_path=$backup_path.tar.gz
 # Backup mongodb database
 elif [ "$BACKUP_DRIVER" = "mongodb" ]; then
-    echo "Backing up $BACKUP_DATABASE..."
-    backup_path=$BACKUP_DIR/$BACKUP_DATABASE-$timestamp.tar.gz
-    mongodump --host $CONNECTION_HOST --port $CONNECTION_PORT --username $CONNECTION_USER --password $CONNECTION_PASSWORD --db $BACKUP_DATABASE --archive=$backup_path --authenticationDatabase $CONNECTION_AUTH_DB --gzip
+    echo "Backing up $BACKUP_NAME..."
+    backup_path=$BACKUP_DIR/$BACKUP_NAME-$timestamp.tar.gz
+    mongodump --host $CONNECTION_HOST --port $CONNECTION_PORT --username $CONNECTION_USER --password $CONNECTION_PASSWORD --archive=$backup_path --authenticationDatabase $CONNECTION_AUTH_DB --gzip
     echo "Backup saved to $backup_path"
 else
     echo "Invalid backup driver: $BACKUP_DRIVER"
@@ -106,3 +107,4 @@ else
 fi
 
 echo "Backup completed successfully"
+exit 0
