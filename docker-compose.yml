@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - 28017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: test123
+
+  postgresql:
+    image: bitnami/postgresql:16.2.0
+    restart: unless-stopped
+    ports:
+      - 6432:5432
+    environment:
+      - POSTGRESQL_PASSWORD=test123
