@@ -1,7 +1,7 @@
 ## Build Docker Image
 
 ```bash
-docker buildx build --push --platform=linux/amd64,linux/arm64 -t switzerchees/dbbackup:1.1.0 .
+docker buildx build --push --platform=linux/amd64,linux/arm64 -t switzerchees/dbbackup:1.1.1 .
 ```
 
 ## Restore PostgreSQL Backup

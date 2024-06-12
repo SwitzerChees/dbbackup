@@ -87,7 +87,7 @@ sorted_files=$(echo "$file_list" | awk -F'/' '{print $NF}' | sort -t '-' -k3,3)
 files_to_keep=$(echo "$sorted_files" | tail -n "$BACKUP_RETENTION")
 
 # Find files to delete
-files_to_delete=$(echo "$sorted_files" | grep -Fxv -f <(echo "$files_to_keep"))
+files_to_delete=$(comm -23 <(echo "$sorted_files" | tr ' ' '\n' | sort) <(echo "$files_to_keep" | tr ' ' '\n' | sort))
 
 # Delete the files that are beyond the retention period
 for file in $files_to_delete; do
