@@ -101,6 +101,8 @@ ping_check=$(curl -s $PINGCHECK_URL)
 echo "Ping check returned: $ping_check"
 if [ "$ping_check" = "Pong" ]; then
     echo "Ping check successful"
+elif [ "$ping_check" = "{\"ok\":true}" ]; then
+    echo "Ping check successful"
 else
     echo "Ping check failed"
     exit 1
